@@ -1,0 +1,18 @@
+{
+  "name": "ReactGallery",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Tyoma404/ReactGallery.git",
+  "author": "<artemshot7@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "start": "yarn parcel serve index.html"
+  },
+  "dependencies": {
+    "LoginForm": "https://github.com/vaduga/LoginForm.git"
+  },
+  "devDependencies": {
+    "parcel": "^1.12.4"
+  }
+}
