@@ -1,4 +1,24 @@
-import LoginForm from 'LoginForm'
+import LoginForm from './components/LoginForm/index.js';
+import React from 'react';
+import ReactDom from 'react-dom';
+
+class App extends React.Component {
+
+    render() {
+
+        return (
+<>
+<h1>Hey!</h1>
+<LoginForm/>
+</>
+
+        )
+    }
+}
+
+ReactDom.render(<App/>, document.querySelector('#myApp'))
+
+
 
 
 /*
