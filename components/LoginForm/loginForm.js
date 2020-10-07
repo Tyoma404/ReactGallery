@@ -1,6 +1,5 @@
 import styles from './style.css'; // технология CSS-modules - уникальные стили для каждого компонента, чтобы не было конфликтов названий в разных css-файлах
 import React from 'react';
-import '@babel/polyfill';    // решает вопрос async функций в Реакте. потом уточним почему babel о него спотыкался
 
 async function Login(login, password){
  
@@ -72,7 +71,7 @@ render() {
       <h2>Application Name</h2>
       <h4>Login</h4>
     </header>
-    <form className={styles.loginForm } onSubmit={(e)=> {e.preventDefault();Login(this.state.user,this.state.password)}} action="#" method="post">
+    <form className={styles.loginForm } onSubmit={()=> Login(this.state.user,this.state.password)} action="#" method="post">
       <input name="email" type="text" onChange={this.changeHandler} className={styles.loginInput} placeholder="User" required autoFocus/>
       <input name="password" type="password" onChange={this.changeHandler} className={styles.loginInput} placeholder="Password" required/>
       <div className="submitContainer">
