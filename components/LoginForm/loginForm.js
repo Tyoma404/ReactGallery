@@ -11,7 +11,7 @@ async function Login(login, password){
   });
 
   let commits = await response.json();
-
+  console.log(commits)
 return commits.idToken
 }  
 
@@ -20,8 +20,8 @@ class LoginForm extends React.Component {
 
     state = {
         loginClasses : styles.login ,
-        user: null,
-        password: null,     // в состоянии приложения храним какие CSS классы у нашей формы
+        email: null,
+        password: null,     
             }
         
     errorHandler = (e) => {
@@ -53,9 +53,7 @@ class LoginForm extends React.Component {
 
       console.log({[name]: temp})
     }
-    submitHandler = (e) =>{
-
-    }
+   
   
 
 
@@ -73,8 +71,8 @@ render() {
       <h2>Application Name</h2>
       <h4>Login</h4>
     </header>
-    <form className={styles.loginForm } onSubmit={this.submitHandler} action="#" method="post">
-      <input name="user" type="text" onChange={this.changeHandler} className={styles.loginInput} placeholder="User" required autoFocus/>
+    <form className={styles.loginForm } onSubmit={()=> Login(this.state.user,this.state.password)} action="#" method="post">
+      <input name="email" type="text" onChange={this.changeHandler} className={styles.loginInput} placeholder="User" required autoFocus/>
       <input name="password" type="password" onChange={this.changeHandler} className={styles.loginInput} placeholder="Password" required/>
       <div className="submitContainer">
         <button type="submit" className={styles.loginButton}>SIGN IN</button>

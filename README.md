@@ -1,3 +1,3 @@
 # ReactGallery
 
-There is something important and useful here hey
+Hey, there is something very important and useful here!

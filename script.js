@@ -1,8 +1,16 @@
-import LoginForm from './components/LoginForm/index.js';
+import LoginForm from './components/LoginForm/loginForm';
 import React from 'react';
 import ReactDom from 'react-dom';
+import Gallery from './components/Gallery/gallery'
 
 class App extends React.Component {
+
+state = {
+    imageURLs: [
+        "https://steemitimages.com/DQmRjArytrorSKNahEjyXyh683teXv3E1qCoz8jjzG38QVo/react.js-logo.png",
+"https://cdn2.specialist.ru/Content/Image/News/Small/reacttrassem-s.jpg"
+]
+}
 
     render() {
 
@@ -10,6 +18,7 @@ class App extends React.Component {
 <>
 <h1>Hey!</h1>
 <LoginForm/>
+<Gallery urls={this.state.imageURLs}/>
 </>
 
         )
