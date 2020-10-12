@@ -18,5 +18,9 @@
     "@babel/preset-react": "^7.10.4",
     "parcel": "^1.12.4",
     "postcss-modules": "^3.2.2"
-  }
+  },
+  "browserslist": [
+    "since 2017-06"
+  ]
+  
 }
