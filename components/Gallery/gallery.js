@@ -2,7 +2,7 @@ import React from 'react';
 
 function Gallery(props){
 console.log(props)
-let imgs = props.urls.map((v)=> <img src={v}/>)
+let imgs = props.urls.map((v, index)=> <img key={index} src={v}/>)
 console.log(imgs)
     return (
         <>
