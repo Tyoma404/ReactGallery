@@ -1,19 +1,7 @@
 import styles from './style.css'; // технология CSS-modules - уникальные стили для каждого компонента, чтобы не было конфликтов названий в разных css-файлах
 import React from 'react';
 
-async function Login(login, password){
  
-  let url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyARBkhuz8A8LZgPc2WrhMkkuZkQ-yvvqLQ'
-  
-  let response = await fetch(url, {
-    method: 'POST',
-    body: JSON.stringify({"email": login, "password": password, "returnSecureToken": true})   
-  });
-
-  let commits = await response.json();
-  console.log(commits)
-return commits.idToken
-}  
 
 class LoginForm extends React.Component {
 
@@ -54,11 +42,24 @@ class LoginForm extends React.Component {
       console.log({[name]: temp})
     }
    
+    Login = async (login, password) => {
+ 
+      let url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyARBkhuz8A8LZgPc2WrhMkkuZkQ-yvvqLQ'
+      
+      let response = await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({"email": login, "password": password, "returnSecureToken": true})   
+      })
   
 
-
-
- 
+      let commits = await response.json();
+  
+      console.log(commits.idToken)
+      this.props.onLogin({ imageURLs: [
+            "https://steemitimages.com/DQmRjArytrorSKNahEjyXyh683teXv3E1qCoz8jjzG38QVo/react.js-logo.png",
+            "https://cdn2.specialist.ru/Content/Image/News/Small/reacttrassem-s.jpg"
+            ]})
+    }
 
  
 render() {
@@ -71,7 +72,7 @@ render() {
       <h2>Application Name</h2>
       <h4>Login</h4>
     </header>
-    <form className={styles.loginForm } onSubmit={(e)=> {e.preventDefault();Login(this.state.user,this.state.password)}} action="#" method="post">
+    <form className={styles.loginForm } onSubmit={(e)=> {e.preventDefault();this.Login(this.state.user,this.state.password)}} action="#" method="post">
       <input name="email" type="text" onChange={this.changeHandler} className={styles.loginInput} placeholder="User" required autoFocus/>
       <input name="password" type="password" onChange={this.changeHandler} className={styles.loginInput} placeholder="Password" required/>
       <div className="submitContainer">

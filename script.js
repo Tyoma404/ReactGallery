@@ -6,18 +6,19 @@ import Gallery from './components/Gallery/gallery'
 class App extends React.Component {
 
 state = {
-    imageURLs: [
-        "https://steemitimages.com/DQmRjArytrorSKNahEjyXyh683teXv3E1qCoz8jjzG38QVo/react.js-logo.png",
-"https://cdn2.specialist.ru/Content/Image/News/Small/reacttrassem-s.jpg"
-]
+imageURLs :[] 
+    
 }
 
+loadData = (data) => {
+    this.setState(data)
+}
     render() {
-
+        
         return (
 <>
 <h1>Hey!</h1>
-<LoginForm/>
+<LoginForm onLogin={this.loadData}/>
 <Gallery urls={this.state.imageURLs}/>
 </>
 
