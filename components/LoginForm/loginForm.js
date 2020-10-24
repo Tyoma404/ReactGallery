@@ -1,27 +1,25 @@
 import styles from './style.css'; // технология CSS-modules - уникальные стили для каждого компонента, чтобы не было конфликтов названий в разных css-файлах
-import React from 'react';
-
- 
-
-class LoginForm extends React.Component {
+import React, {useState, useContext} from 'react';
 
 
-    state = {
+const LoginForm = () => {
+
+  const context = useContext(MyContext)
+
+   const [state, setState] = useState({
         loginClasses : styles.login ,
         email: null,
         password: null,     
-            }
+            })
         
-    errorHandler = (e) => {
+   const errorHandler = (errorclass) => {
       
-       let errorclass = e.target.dataset.errorclass            
-       
-       this.setState({ loginClasses: styles.login + " " + errorclass}
+       setState({ loginClasses: styles.login + " " + errorclass}
          )
 
          setTimeout(() => {
             
-            this.setState(prevState =>{    // убираем инфу о классе с ошибкой через 1,5 сек
+            setState(prevState =>{    // убираем инфу о классе с ошибкой через 1,5 сек
                 return{
                      ...prevState,
                      loginClasses: styles.login 
@@ -32,17 +30,17 @@ class LoginForm extends React.Component {
 
         }
 
-    changeHandler = (event) => {
+    const changeHandler = (event) => {
       console.log(event.target.value)
       let temp = event.target.value
       let name = event.target.name
-      this.setState({[name]: temp}) 
+      setState({[name]: temp}) 
 
 
       console.log({[name]: temp})
     }
    
-    Login = async (login, password) => {
+    const Login = async (login, password) => {
  
       let url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyARBkhuz8A8LZgPc2WrhMkkuZkQ-yvvqLQ'
       
@@ -55,26 +53,28 @@ class LoginForm extends React.Component {
       let commits = await response.json();
   
       console.log(commits.idToken)
-      this.props.onLogin({ imageURLs: [
+
+     
+      context.loadData({ imageURLs: [
             "https://steemitimages.com/DQmRjArytrorSKNahEjyXyh683teXv3E1qCoz8jjzG38QVo/react.js-logo.png",
             "https://cdn2.specialist.ru/Content/Image/News/Small/reacttrassem-s.jpg"
             ]})
     }
 
  
-render() {
-  console.log("loginClasses при каждом рендере компонента LoginForm" + this.state.loginClasses);
+
+  console.log("loginClasses при каждом рендере компонента LoginForm" + state.loginClasses);
     return (
     <>
 <div className={ styles.loginContainer }>
-  <section className={this.state.loginClasses} id="login">
+  <section className={state.loginClasses} id="login">
    <header>
       <h2>Application Name</h2>
       <h4>Login</h4>
     </header>
-    <form className={styles.loginForm } onSubmit={(e)=> {e.preventDefault();this.Login(this.state.user,this.state.password)}} action="#" method="post">
-      <input name="email" type="text" onChange={this.changeHandler} className={styles.loginInput} placeholder="User" required autoFocus/>
-      <input name="password" type="password" onChange={this.changeHandler} className={styles.loginInput} placeholder="Password" required/>
+    <form className={styles.loginForm } onSubmit={(e)=> {e.preventDefault();Login(state.user,state.password)}} action="#" method="post">
+      <input name="email" type="text" onChange={changeHandler} className={styles.loginInput} placeholder="User" required autoFocus/>
+      <input name="password" type="password" onChange={changeHandler} className={styles.loginInput} placeholder="Password" required/>
       <div className="submitContainer">
         <button type="submit" className={styles.loginButton}>SIGN IN</button>
       </div>
@@ -83,11 +83,11 @@ render() {
  
 </div>
 
-<button id="e1" onClick={this.errorHandler} data-errorclass={styles.error_1}>Login error!</button>
+<button id="e1" onClick={() => errorHandler(styles.error_1)} >Login error!</button>
 
     </>
 )
-}
+
 }
 
 
