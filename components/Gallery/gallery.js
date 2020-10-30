@@ -1,19 +1,33 @@
 import React, { useContext } from 'react';
+import {MyContext} from '../../script'
+import Recipe from '../../components/Recipe/recipe'
+import { makeStyles } from '@material-ui/core/styles';
 
 const Gallery = ()=>{
 
+    const useStyles = makeStyles((theme) => ({     // кастомный хук от materialUI для стилизации компонентов в JS
+        headers: {
+            color: "#a61696"
+        },
+        container: {
+            display: "flex"
+          }
+    } 
+          ));
+
+    const classes = useStyles();
+
 const context = useContext(MyContext)
 
-// const context = {state: { imageURLs: [
-//     "https://steemitimages.com/DQmRjArytrorSKNahEjyXyh683teXv3E1qCoz8jjzG38QVo/react.js-logo.png",
-//     "https://cdn2.specialist.ru/Content/Image/News/Small/reacttrassem-s.jpg"
-//     ]}}
-let imgs = context.state.imageURLs[0] && context.state.imageURLs.map((v, index)=> <img key={index} src={v}/>)
-console.log(imgs)
+
+let recipes = context.state.imageURLs[0] && context.state.imageURLs.map((v, index)=> <Recipe key={index} imgUrl={v}/>)
+
     return (
         <>
-        <h1>The Gallery</h1>
-        {imgs}
+        <h1 className={classes.headers}>The Recipes Gallery</h1>
+        <div className={classes.container}>
+        {recipes}
+        </div>
         </> 
     )
     

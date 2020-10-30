@@ -1,6 +1,6 @@
 import styles from './style.css'; // технология CSS-modules - уникальные стили для каждого компонента, чтобы не было конфликтов названий в разных css-файлах
 import React, {useState, useContext} from 'react';
-
+import {MyContext} from '../../script'
 
 const LoginForm = () => {
 
@@ -56,7 +56,7 @@ const LoginForm = () => {
 
      
       context.loadData({ imageURLs: [
-            "https://steemitimages.com/DQmRjArytrorSKNahEjyXyh683teXv3E1qCoz8jjzG38QVo/react.js-logo.png",
+            "https://dishingouthealth.com/wp-content/uploads/2020/02/VegPaella-500x500.jpg",
             "https://cdn2.specialist.ru/Content/Image/News/Small/reacttrassem-s.jpg"
             ]})
     }
