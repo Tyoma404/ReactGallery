@@ -85,7 +85,7 @@ const App = () => {
         <br/>
 
         
-        <li> <a style={{textDecoration: "underline"}} onClick={()=>{isLogged? setLogged(false) : none}} >Public only (Logout)</a></li>
+        <li> <a style={{textDecoration: "underline"}} onClick={()=> setLogged(false)} >Public only (Logout)</a></li>
         
 </ul>
 
