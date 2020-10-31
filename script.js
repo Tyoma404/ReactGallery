@@ -5,7 +5,12 @@ import Gallery from './components/Gallery/gallery'
 import SignIn from './components/Signin/signin'
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-
+import {
+BrowserRouter,
+Switch, Redirect,
+Route,
+Link
+} from "react-router-dom";
 
 
 export const MyContext = React.createContext()
@@ -28,6 +33,21 @@ return (
 )
 }
 
+const PrivateContent = (props)=> {
+        let show = false
+        
+        const content = show? props.children : null
+        return (
+                <>
+                
+                {show? content : null}
+               
+                </>
+        )
+        
+        }
+
+
 const App = () => {
 
         const useStyles = makeStyles((theme) => ({
@@ -44,17 +64,28 @@ const App = () => {
   const [showPrivate, setShow] = useState(false)
 
 
-  const content = isLogged? <Gallery/> :<SignIn setLogged={setLogged}/> 
+//   const content = isLogged? <Gallery/> :<SignIn setLogged={setLogged}/> 
+
 
 
         return (
 <MyProvider>
+<BrowserRouter>
 <CssBaseline />    {/* чтобы здесь стили body, css соответствовали тем что навяжут material UI компоненты*/}
+
+
 <ul style={{listStyleType: "none",fontSize: "15px", position: "absolute", left: "5px", top: "5px"}}>
-                
-        <li style={{textDecoration: "underline"}} onClick={()=>setShow(!showPrivate)}>Show/Hide Private content</li>
+        <Link to="/privateContent">        
+        <li style={{textDecoration: "underline"}} onClick={()=> isLogged ? setShow(showPrivate) : setShow(showPrivate)}>Show/Hide Private content</li>
+        </Link>
+
         <br/>
-        <li style={{textDecoration: "underline"}} onClick={()=>{setLogged(false)}}>Public only (LogOut)</li>
+
+        
+
+        <Link to="/loginSection">
+        <li style={{textDecoration: "underline"}} onClick={()=>{isLogged? setLogged(false) : none}}>Public only (LogOut)</li>
+        </Link>
 </ul>
 
 
@@ -63,15 +94,32 @@ const App = () => {
 <h1>Public Section</h1>
 </div>
 
-<div style={{margin: "auto 20%", border: "2px dotted grey", minHeight: "200px", display: "flex", flexDirection: "column", alignItems: "center", paddingBottom: "40px"}}>
+<div style={{margin: "auto 20%", border: "2px solid black", minHeight: "200px", display: "flex", flexDirection: "column", alignItems: "center", paddingBottom: "40px"}}>
 
-{showPrivate? content : null }
 
+<Switch>
+<Route path="/">
+<Redirect to="/loginSection"></Redirect>
+</Route>
+
+        <Route path="/privateContent">
+<PrivateContent>
+<Gallery/>
+</PrivateContent>
+        </Route>
+        
+        <Route path="/loginSection">
+        <>
+        <p>sdfdsf</p>
+        <SignIn setLogged={setLogged}/>
+        </>
+        </Route>
+</Switch>
 
 
 
 </div>
-
+</BrowserRouter>
 </MyProvider>
 
         )
