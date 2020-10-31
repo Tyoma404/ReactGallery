@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {MyContext} from '../../script'
-
+import {useHistory} from "react-router-dom";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -40,6 +40,7 @@ const context = useContext(MyContext)
 const classes = useStyles();
 let user, pwd;
 /// вместо changeHandler как в loginForm использовать useRef-хук для ссылок на поля с именем и паролем
+const history = useHistory();
 
 const Login = async (login, password) => {
  
@@ -60,7 +61,8 @@ const Login = async (login, password) => {
           "https://dishingouthealth.com/wp-content/uploads/2020/02/VegPaella-500x500.jpg",
           "https://i.pinimg.com/564x/25/9f/04/259f049e11b0def18663d8646a0ac3c0.jpg"
           ]}) ;
-props.setLogged(true)
+props.setLogged(true);
+history.push("/privateContent");
 
   }
 
