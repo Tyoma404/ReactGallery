@@ -1,5 +1,5 @@
 // import LoginForm from './components/LoginForm/loginForm';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import ReactDom from 'react-dom';
 import Gallery from './components/Gallery/gallery'
 import SignIn from './components/Signin/signin'
@@ -34,13 +34,15 @@ return (
 }
 
 const PrivateContent = (props)=> {
-        let show = false
         
-        const content = show? props.children : null
+        
+        const content = props.isLogged ? props.children : <Redirect to="/loginSection"></Redirect>
+
+
         return (
                 <>
                 
-                {show? content : null}
+                {content}
                
                 </>
         )
@@ -61,10 +63,11 @@ const App = () => {
         
  
   const [isLogged, setLogged] = useState(false)
-  const [showPrivate, setShow] = useState(false)
 
+  useEffect(()=> {
+          console.log("isLogged"+isLogged)
+  }, [isLogged])
 
-//   const content = isLogged? <Gallery/> :<SignIn setLogged={setLogged}/> 
 
 
 
@@ -76,16 +79,14 @@ const App = () => {
 
 <ul style={{listStyleType: "none",fontSize: "15px", position: "absolute", left: "5px", top: "5px"}}>
         <Link to="/privateContent">        
-        <li style={{textDecoration: "underline"}} onClick={()=> isLogged ? setShow(showPrivate) : setShow(showPrivate)}>Show/Hide Private content</li>
+        <li style={{textDecoration: "underline"}} >Show Private content</li>
         </Link>
 
         <br/>
 
         
-
-        <Link to="/loginSection">
-        <li style={{textDecoration: "underline"}} onClick={()=>{isLogged? setLogged(false) : none}}>Public only (LogOut)</li>
-        </Link>
+        <li> <a style={{textDecoration: "underline"}} onClick={()=> setLogged(false)} >Public only (Logout)</a></li>
+        
 </ul>
 
 
@@ -98,22 +99,16 @@ const App = () => {
 
 
 <Switch>
-<Route path="/">
-<Redirect to="/loginSection"></Redirect>
-</Route>
 
-        <Route path="/privateContent">
-<PrivateContent>
+<Route path="/privateContent">
+<PrivateContent isLogged={isLogged}>
 <Gallery/>
 </PrivateContent>
-        </Route>
+</Route>
         
         <Route path="/loginSection">
-        <>
-        <p>sdfdsf</p>
-        <SignIn setLogged={setLogged}/>
-        </>
-        </Route>
+               <SignIn setLogged={setLogged}/>
+         </Route>
 </Switch>
 
 
