@@ -54,7 +54,7 @@ const App = () => {
     <MyProvider>
       <Router>
         <ul>
-          <Link to="/privateContent/test">
+          <Link to="#">
             <li>Test</li>
           </Link>
           <Link to="/privateContent">
@@ -79,12 +79,6 @@ const App = () => {
             <Route exact path="/privateContent">
               <PrivateContent isLogged={isLogged}>
                 <Gallery />
-              </PrivateContent>
-            </Route>
-
-            <Route path="/privateContent/test">
-              <PrivateContent isLogged={isLogged}>
-                <Blank />
               </PrivateContent>
             </Route>
 

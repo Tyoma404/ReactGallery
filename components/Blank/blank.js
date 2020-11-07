@@ -1,11 +1,11 @@
 import styles from "./blank.module.css";
 import axios from "axios";
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import ReactDOM from "react-dom";
 import MyBar from "./myBar.js";
 
 const debounce = (func, delay) => {
-  // обычный дебаунс
+  // обычный дебаунс. Используем в последнюю очередь. Прогресс-бар без него резко дергаться. Используем чтобы пропускать обновления.
   let inDebounce;
   return function() {
     const context = this;
@@ -16,66 +16,46 @@ const debounce = (func, delay) => {
 };
 
 export default function Test() {
-  const [progress, setProgress] = useState(0);
-  const [loaded, setLoaded] = useState(false);
+  const [progress, setProgress] = useState(70);
 
-  const skipUpdate = useCallback(
-    debounce(percentCompleted => {
-      setProgress(percentCompleted);
-      console.log("download progress:", percentCompleted);
-    }, 100),
-    []
-  );
+  const skipUpdate = null; // здесь в последнюю очередь будет функция-обертка для дебаунса и функции обновления состоянии прогресс-бара.
 
-  async function downloadFile(url, count) {
-    const response = await axios({
-      url,
-      responseType: "blob",
+  // картинка "https://fetch-progress.anthum.com/30kbps/images/sunrise-baseline.jpg"
 
-      onDownloadProgress: progressEvent => {
-        let percentCompleted = Math.floor(
-          (progressEvent.loaded / progressEvent.total) * 100
-        );
+  const downloadFile = url => {
+    // Симулируем загрузку картинки чтобы вмешаться в процесс и показывать прогресс загрузки.
+    // Сделаем запрос по адресу картинки, загрузим ответ как бинарный объект blob (Binary Large OBject).
+    //
+    // Через fetch слишком низкоуровневый код, используем популярную библиотеку axios (функция, как fetch). Ей для запроса передаем url
+    // и объект с такими настройками (конкретные свойств взяты из документации axios, или гугл):
 
-        skipUpdate(percentCompleted);
-      }
-    }).catch(error => {
-      console.log(error);
-    });
+    // responseType: "blob",
+    // onDownloadProgress: progressEvent => {
+    //   let percentCompleted = Math.floor(
+    //     (progressEvent.loaded / progressEvent.total) * 100
+    //
+    //           ...   обновляем прогресс бар, через состояние.
+    //
+    //   );
+
+    // отловить (catch) ошибки загрузки в консоль.
 
     const reader = new window.FileReader();
-    reader.readAsDataURL(response.data);
+    reader.readAsDataURL(response.data); // к ответу (response - твоя переменная из запроса) цепляем специальный объект FileReader.
     reader.onload = () => {
+      // FileReader используют еще когда делают Upload файлов на сайт.
       document.getElementById("imgFetched").src = reader.result;
     };
-    setLoaded(true);
-  }
+    ///  - загрузку сначала сделаем через кнопку Reload. Она напрямую запускает downloadFile(url)
+    ///  - вторым этапом (когда уже все работает) настроим логику состояния, использовать хук useEffect чтобы в начале кнопки не было, downloadFile(url)
+    ///  запускался при первом рендере этого компонента (Blank)
+  };
 
-  useEffect(
-    () =>
-      downloadFile(
-        "https://fetch-progress.anthum.com/30kbps/images/sunrise-baseline.jpg"
-      ),
-    []
-  );
-
-  // useEffect(() => {
-  //   const timer = setInterval(() => {
-  //     setProgress((prevProgress) => (prevProgress >= 100 ? 5 : prevProgress + 5));
-  //   }, 800);
-  //   return () => {
-  //     clearInterval(timer);
-  //   };
-  // }, []);
   const reset = () => {
-    setLoaded(false);
-    downloadFile(
-      "https://fetch-progress.anthum.com/30kbps/images/sunrise-baseline.jpg"
-    );
     setProgress(0);
   };
 
-  const reloadBtn = loaded ? <button onClick={reset}>Reload</button> : null;
+  const reloadBtn = <button onClick={reset}>Reload</button>;
 
   return (
     <div id={styles.MyContainer}>
@@ -94,4 +74,5 @@ export default function Test() {
   );
 }
 
-//ReactDOM.render(<Test />, document.querySelector("#test"));
+ReactDOM.render(<Test />, document.querySelector("#test")); /// когда все готово, убираем здесь рендер, интегрируем
+// компонент в приватную секцию проекта отдельным роутом (чтобы или Галлерея или этот компонент, но все через логин)
