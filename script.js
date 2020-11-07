@@ -1,128 +1,101 @@
+/* eslint-disable react/prop-types */
 // import LoginForm from './components/LoginForm/loginForm';
-import React, {useState, useEffect} from 'react';
-import ReactDom from 'react-dom';
-import Gallery from './components/Gallery/gallery'
-import SignIn from './components/Signin/signin'
-import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import React, { useState, useEffect } from "react";
+import ReactDom from "react-dom";
+import Gallery from "./components/Gallery/gallery";
+import SignIn from "./components/Signin/signin";
+import Test from "./components/Test/test";
 import {
-BrowserRouter,
-Switch, Redirect,
-Route,
-Link
+  BrowserRouter as Router,
+  Switch,
+  Redirect,
+  Route,
+  Link
 } from "react-router-dom";
+import styles from "./style.module.css";
 
+export const MyContext = React.createContext();
 
-export const MyContext = React.createContext()
+const MyProvider = props => {
+  const [state, setState] = useState({
+    imageURLs: [],
+    isLogged: false
+  });
 
-const MyProvider = (props) =>{
-    const [state, setState] = useState({
-        imageURLs :[],
-        isLogged : false   
-        })
+  const loadData = data => {
+    setState(data);
+  };
 
-    const loadData = (data) => {
-            setState(data)
-        }
+  return (
+    <MyContext.Provider value={{ state, loadData }}>
+      {props.children}
+    </MyContext.Provider>
+  );
+};
 
-return (
-<MyContext.Provider value={{state, loadData}}>
+const PrivateContent = props => {
+  const content = props.isLogged ? (
+    props.children
+  ) : (
+    <Redirect to="/loginSection"></Redirect>
+  );
 
-{props.children}
-</MyContext.Provider>
-)
-}
-
-const PrivateContent = (props)=> {
-        
-        
-        const content = props.isLogged ? props.children : <Redirect to="/loginSection"></Redirect>
-
-
-        return (
-                <>
-                
-                {content}
-               
-                </>
-        )
-        
-        }
-
+  return <>{content}</>;
+};
 
 const App = () => {
+  const [isLogged, setLogged] = useState(false);
 
-        const useStyles = makeStyles((theme) => ({
-                paper: {
-                  marginTop: theme.spacing(8),
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                }
-              }));
-        
- 
-  const [isLogged, setLogged] = useState(false)
+  useEffect(() => {
+    console.log("isLogged" + isLogged);
+  }, [isLogged]);
 
-  useEffect(()=> {
-          console.log("isLogged"+isLogged)
-  }, [isLogged])
+  return (
+    <MyProvider>
+      <Router>
+        <ul>
+          <Link to="/privateContent/test">
+            <li>Test</li>
+          </Link>
+          <Link to="/privateContent">
+            <li>Show Private content</li>
+          </Link>
 
+          <br />
 
+          <li>
+            <a id={styles.out} onClick={() => setLogged(false)}>
+              Public only (Logout)
+            </a>
+          </li>
+        </ul>
 
+        <div className={styles.sections}>
+          <h1 id="gr">Public Section</h1>
+        </div>
 
-        return (
-<MyProvider>
-<BrowserRouter>
-<CssBaseline />    {/* чтобы здесь стили body, css соответствовали тем что навяжут material UI компоненты*/}
+        <div className={styles.sections + " " + styles.private}>
+          <Switch>
+            <Route exact path="/privateContent">
+              <PrivateContent isLogged={isLogged}>
+                <Gallery />
+              </PrivateContent>
+            </Route>
 
+            <Route path="/privateContent/test">
+              <PrivateContent isLogged={isLogged}>
+                <Test />
+              </PrivateContent>
+            </Route>
 
-<ul style={{listStyleType: "none",fontSize: "15px", position: "absolute", left: "5px", top: "5px"}}>
-        <Link to="/privateContent">        
-        <li style={{textDecoration: "underline"}} >Show Private content</li>
-        </Link>
+            <Route path="/loginSection">
+              <SignIn setLogged={setLogged} />
+            </Route>
+          </Switch>
+        </div>
+      </Router>
+    </MyProvider>
+  );
+};
 
-        <br/>
-
-        
-        <li> <a style={{textDecoration: "underline"}} onClick={()=> setLogged(false)} >Public only (Logout)</a></li>
-        
-</ul>
-
-
-
-<div style={{margin: "auto 20%", border: "2px dotted grey", textAlign: "center"}}>
-<h1>Public Section</h1>
-</div>
-
-<div style={{margin: "auto 20%", border: "2px solid black", minHeight: "200px", display: "flex", flexDirection: "column", alignItems: "center", paddingBottom: "40px"}}>
-
-
-<Switch>
-
-<Route path="/privateContent">
-<PrivateContent isLogged={isLogged}>
-<Gallery/>
-</PrivateContent>
-</Route>
-        
-        <Route path="/loginSection">
-               <SignIn setLogged={setLogged}/>
-         </Route>
-</Switch>
-
-
-
-</div>
-</BrowserRouter>
-</MyProvider>
-
-        )
-    
-}
-
-ReactDom.render(<App/>, document.querySelector('#myApp'))
-
-
-
-
+ReactDom.render(<App />, document.querySelector("#myApp"));
