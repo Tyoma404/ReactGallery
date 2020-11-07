@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import ReactDom from "react-dom";
 import Gallery from "./components/Gallery/gallery";
 import SignIn from "./components/Signin/signin";
-import Test from "./components/Test/test";
+import Blank from "./components/Blank/blank";
 import {
   BrowserRouter as Router,
   Switch,
@@ -84,7 +84,7 @@ const App = () => {
 
             <Route path="/privateContent/test">
               <PrivateContent isLogged={isLogged}>
-                <Test />
+                <Blank />
               </PrivateContent>
             </Route>
 
