@@ -1,0 +1,35 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+#out {
+  color: rgb(200, 8, 8);
+}
+
+p {
+  color: green;
+  text-align: center;
+}
+
+.sections {
+  margin: auto 20%;
+  border: 2px dotted grey;
+}
+
+.private {
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 40px;
+  border: 2px dotted grey;
+}
+
+ul {
+  list-style-type: none;
+  font-size: 15px;
+  position: absolute;
+  left: 5px;
+  top: 5px;
+}
