@@ -1,21 +1,9 @@
 import React, { useContext } from "react";
 import { MyContext } from "../../script";
 import Recipe from "../../components/Recipe/recipe";
-import { makeStyles } from "@material-ui/core/styles";
+import styles from "./style.module.css";
 
 const Gallery = () => {
-  const useStyles = makeStyles(theme => ({
-    // кастомный хук от materialUI для стилизации компонентов в JS
-    headers: {
-      color: "#098967"
-    },
-    container: {
-      display: "flex"
-    }
-  }));
-
-  const classes = useStyles();
-
   const context = useContext(MyContext);
 
   let recipes =
@@ -26,8 +14,8 @@ const Gallery = () => {
 
   return (
     <>
-      <h1 className={classes.headers}>The Recipes Gallery</h1>
-      <div className={classes.container}>{recipes}</div>
+      <h1 className={styles.headers}>The Recipes Gallery</h1>
+      <div className={styles.container}>{recipes}</div>
     </>
   );
 };

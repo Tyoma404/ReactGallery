@@ -61,7 +61,8 @@ export default function SignIn(props) {
     });
 
     props.setLogged(true);
-    history.push("/privateContent");
+
+    history.push("/privateContent/" + props.redirector);
   };
 
   return (

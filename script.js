@@ -2,6 +2,7 @@
 // import LoginForm from './components/LoginForm/loginForm';
 import React, { useState, useEffect } from "react";
 import ReactDom from "react-dom";
+import CssBaseline from "@material-ui/core/CssBaseline";
 import Gallery from "./components/Gallery/gallery";
 import SignIn from "./components/Signin/signin";
 import Blank from "./components/Blank/blank";
@@ -45,6 +46,7 @@ const PrivateContent = props => {
 
 const App = () => {
   const [isLogged, setLogged] = useState(false);
+  const [redirector, setRedirector] = useState("gallery");
 
   useEffect(() => {
     console.log("isLogged" + isLogged);
@@ -52,13 +54,14 @@ const App = () => {
 
   return (
     <MyProvider>
+      <CssBaseline />
       <Router>
         <ul>
-          <Link to="#">
-            <li>Test</li>
+          <Link to="/privateContent/blank">
+            <li onClick={() => setRedirector("blank")}>Show blank</li>
           </Link>
-          <Link to="/privateContent">
-            <li>Show Private content</li>
+          <Link to="/privateContent/gallery">
+            <li onClick={() => setRedirector("gallery")}>Show Gallery</li>
           </Link>
 
           <br />
@@ -76,14 +79,19 @@ const App = () => {
 
         <div className={styles.sections + " " + styles.private}>
           <Switch>
-            <Route exact path="/privateContent">
-              <PrivateContent isLogged={isLogged}>
-                <Gallery />
-              </PrivateContent>
-            </Route>
-
             <Route path="/loginSection">
-              <SignIn setLogged={setLogged} />
+              <SignIn redirector={redirector} setLogged={setLogged} />
+            </Route>
+            <Route path="/privateContent">
+              <PrivateContent isLogged={isLogged}>
+                <Route path="/privateContent/gallery">
+                  <Gallery />
+                </Route>
+
+                <Route exact path="/privateContent/blank">
+                  <Blank />
+                </Route>
+              </PrivateContent>
             </Route>
           </Switch>
         </div>

@@ -81,5 +81,5 @@ export default function Test() {
   );
 }
 
-ReactDOM.render(<Test />, document.querySelector("#test")); /// когда все готово, убираем здесь рендер, интегрируем
+// ReactDOM.render(<Test />, document.querySelector("#test")); /// когда все готово, убираем здесь рендер, интегрируем
 // компонент в приватную секцию проекта отдельным роутом (чтобы или Галлерея или этот компонент, но все через логин)
